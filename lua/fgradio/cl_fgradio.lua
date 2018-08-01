@@ -270,7 +270,7 @@ concommand.Add(FgRConfig.OpenVguiConsole,fgRadio.VGUI)
 fgRadio.InitializeGamemode = function()
 	if engine.ActiveGamemode() == "darkrp" then
 		if FgRConfig.TEAMRestriction then
-			hook.Add("OnPlayerChangedTeam", nil, function(ply, b, a)
+			hook.Add("OnPlayerChangedTeam", "hook.fgRadio.OnPlayerChangedTeam", function(ply, b, a)
 				if not table.HasValue(FgRConfig.TEAMGroup, a) then
 					fgRadio.MyChannel = nil
 					RadioOff = false
@@ -279,7 +279,7 @@ fgRadio.InitializeGamemode = function()
 		end
 	end
 end
-hook.Add( "Initialize", nil, fgRadio.InitializeGamemode )
+hook.Add( "Initialize", "hook.fgRadio.InitializeGamemode", fgRadio.InitializeGamemode )
 
 net.Receive("FGRadio_SendClient", function()
 	if not fgRadio.CheckTeamDarkRp(LocalPlayer()) then 
