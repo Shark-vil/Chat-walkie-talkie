@@ -1,0 +1,11 @@
+/////////////////////////////////////////////////////////////////
+-- Author: Shark_vil
+-- Profile: http://steamcommunity.com/id/sharkvil1337/
+-- Release: 21.08.2017
+/////////////////////////////////////////////////////////////////
+
+if SERVER then
+	include( "fgradio/sv_init.lua" )
+else
+	include( "fgradio/cl_init.lua" )
+end
