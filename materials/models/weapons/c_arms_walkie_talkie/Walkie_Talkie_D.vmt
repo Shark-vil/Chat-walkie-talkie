@@ -1,6 +1,0 @@
-"VertexlitGeneric"
-{
-	"$basetexture" "models/weapons/c_arms_walkie_talkie/Walkie_Talkie_D"
-	"$bumpmap" "models/weapons/c_arms_walkie_talkie/Walkie_Talkie_N"
-	"$envmapmask" "models/weapons/c_arms_walkie_talkie/Walkie_Talkie_S"
-}
