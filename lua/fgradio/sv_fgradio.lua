@@ -66,19 +66,23 @@ end
 hook.Add("PlayerInitialSpawn", "fgRadio.PlayerInitialSpawn", fgRadio.PlayerInitialSpawn)
 
 fgRadio.PlayerSay = function(ply, text)
-local rSetChannel = string.len(FgRConfig.SetChannel)
-local rSendChannel = string.len(FgRConfig.SendChannel)
-local rStatus = string.len(FgRConfig.Status)
-local rVgui = string.len(FgRConfig.OpenVgui)
-local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
-
+	local command = text
+	local strStart = text:len()
 	if ply.fgRadio_Array.RadioOff == nil then
 		ply.fgRadio_Array.RadioOff = false
 	end
 
-	if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rSetChannel) ) then
-		local Cha = string.sub( text, rSetChannel+1, rSetChannel+5 )
-		local BadNum = string.sub( text, rSetChannel+4, rSetChannel+4 )
+	for i=1, text:len() do
+		if (text[i] == " ") then
+			command = string.sub(text:lower(), 1, i-1)
+			strStart = i
+			break
+		end
+	end
+
+	if ( command == string.lower(FgRConfig.SetChannel) ) then
+		local Cha = string.sub( text, string.len(FgRConfig.SetChannel)+1, string.len(FgRConfig.SetChannel)+5 )
+		local BadNum = string.sub( text, string.len(FgRConfig.SetChannel)+4, string.len(FgRConfig.SetChannel)+4 )
 		local NumCheck = tonumber(Cha)
 		local tblset = {}
 		
@@ -128,8 +132,8 @@ local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
 		return ""
 	end
 	
-	if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rSendChannel) ) then
-		local Messages = string.sub( text, rSendChannel+1 )
+	if ( command == string.lower(FgRConfig.SendChannel) ) then
+		local Messages = string.sub( text, string.len(FgRConfig.SendChannel)+1 )
 		local tbl = { id = "SendChannelCheck", arg = Messages, plname = ply:Name(), plsteamid64 = ply:SteamID64() } 
 		net.Start("FGRadio_SendClient")
 			net.WriteTable(tbl)
@@ -138,7 +142,7 @@ local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
 		return ""
 	end
 	
-	if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rStatus) ) then	
+	if ( command == string.lower(FgRConfig.Status) ) then	
 		local tbl = { id = "EnableDisable" }
 		net.Start("FGRadio_SendClient")
 			net.WriteTable(tbl)
@@ -147,7 +151,7 @@ local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
 		return ""
 	end
 	
-	if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rVgui) ) then
+	if ( command == string.lower(FgRConfig.OpenVgui) ) then
 		local tbl = { id = "VGUI" }
 		net.Start("FGRadio_SendClient")
 			net.WriteTable(tbl)
@@ -161,7 +165,7 @@ local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
 		if isulx ~= nil then
 			for _, group in pairs(FgRConfig.ULXGroupAccess) do
 				if ( ply:IsUserGroup(group) ) then
-					if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rGetAllChannel) ) then
+					if ( command == string.lower(FgRConfig.GetAllChannel) ) then
 					
 						local tbl = { id = "GetAllChannel", OwnerSteamId64 = ply:SteamID64() }
 						net.Start("FGRadio_SendClient")
@@ -174,7 +178,7 @@ local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
 			end
 		else
 			if ( ply:IsAdmin() or ply:IsSuperAdmin() ) then
-				if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rGetAllChannel) ) then
+				if ( command == string.lower(FgRConfig.GetAllChannel) ) then
 						
 					local tbl = { id = "GetAllChannel", OwnerSteamId64 = ply:SteamID64() }
 					net.Start("FGRadio_SendClient")
@@ -186,7 +190,7 @@ local rGetAllChannel = string.len(FgRConfig.GetAllChannel)
 			end
 		end
 	else
-		if ( string.gsub(string.lower(text), "%s+", "") == string.lower(rGetAllChannel) ) then
+		if ( command == string.lower(FgRConfig.GetAllChannel) ) then
 			
 			local tbl = { id = "GetAllChannel", OwnerSteamId64 = ply:SteamID64() }
 			net.Start("FGRadio_SendClient")
